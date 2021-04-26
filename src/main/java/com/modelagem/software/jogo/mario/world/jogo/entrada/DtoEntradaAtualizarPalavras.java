@@ -1,6 +1,6 @@
 package com.modelagem.software.jogo.mario.world.jogo.entrada;
 
-import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoCategoria;
+import com.modelagem.software.jogo.mario.world.jogo.dto.DtoPalavra;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +12,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DtoEntradaConsultarCategorias {
+public class DtoEntradaAtualizarPalavras {
 
-    private List<DtoCategoria> categorias;
+    private List<DtoPalavra> palavras;
 
 }

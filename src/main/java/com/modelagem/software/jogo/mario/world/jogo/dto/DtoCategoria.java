@@ -1,4 +1,4 @@
-package com.modelagem.software.jogo.mario.world.jogo.retorno;
+package com.modelagem.software.jogo.mario.world.jogo.dto;
 
 import lombok.Builder;
 import lombok.Data;
