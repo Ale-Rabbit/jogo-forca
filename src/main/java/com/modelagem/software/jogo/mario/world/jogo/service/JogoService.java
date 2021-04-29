@@ -40,26 +40,37 @@ public class JogoService {
 
         }
 
-        Optional<List<Palavra>> palavras = palavraRepository.findByCategoriaDescCat(categoria);
+        if(categoria != null && !categoria.isEmpty()) {
 
-        if (palavras.isPresent() && !palavras.get().isEmpty()) {
+            Optional<List<Palavra>> palavras = palavraRepository.findByCategoriaDescCat(categoria);
 
-            if (palavras.get().size() > 1) {
+            if (palavras.isPresent() && !palavras.get().isEmpty()) {
 
-                Random random = new Random();
-                int quantidadeDePalavras = palavras.get().size();
+                if (palavras.get().size() > 1) {
 
-                Palavra palavraAleatoria = palavras.get().get(random.nextInt(quantidadeDePalavras));
+                    return DtoRetornoIniciar.builderDefault()
+                            .palavra(retornarPalavraAleatoria(palavras.get()))
+                            .build();
+
+                } else {
+
+                    return DtoRetornoIniciar.builderDefault()
+                            .palavra(palavras.get().get(0).getDescPv())
+                            .build();
+
+                }
+
+            }
+
+        } else {
+
+            List<Palavra> palavras = palavraRepository.findAll();
+
+            if (palavras != null && !palavras.isEmpty()) {
 
                 return DtoRetornoIniciar.builderDefault()
-                                        .palavra(palavraAleatoria.getDescPv())
-                                        .build();
-
-            } else {
-
-                return DtoRetornoIniciar.builderDefault()
-                                        .palavra(palavras.get().get(0).getDescPv())
-                                        .build();
+                        .palavra(retornarPalavraAleatoria(palavras))
+                        .build();
 
             }
 
@@ -67,6 +78,20 @@ public class JogoService {
 
         return new DtoRetornoIniciar(false,
                                                 "Nenhuma palavra encontrada para categoria " + categoria.toString());
+
+    }
+
+
+    public DtoRetornoIniciar iniciarJogo(String username){
+        return iniciarJogo(username, null);
+    }
+
+    private String retornarPalavraAleatoria(List<Palavra> palavras){
+
+        int quantidadeDePalavras = palavras.size();
+
+        Palavra palavraAleatoria = palavras.get(new Random().nextInt(quantidadeDePalavras));
+        return palavraAleatoria.getDescPv();
 
     }
 }

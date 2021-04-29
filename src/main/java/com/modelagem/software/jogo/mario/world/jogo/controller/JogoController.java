@@ -16,10 +16,13 @@ public class JogoController {
     private JogoService service;
 
     @PostMapping(value = "/iniciar/{username}/{categoria}")
-    public ResponseEntity<DtoRetornoIniciar> login(@PathVariable String username,
-                                                   @PathVariable String categoria){
-
+    public ResponseEntity<DtoRetornoIniciar> iniciarJogo(@PathVariable String username,
+                                                         @PathVariable String categoria){
         return ResponseEntity.ok().body(service.iniciarJogo(username, categoria));
+    }
 
+    @PostMapping(value = "/iniciar/{username}")
+    public ResponseEntity<DtoRetornoIniciar> iniciarJogo(@PathVariable String username){
+        return ResponseEntity.ok().body(service.iniciarJogo(username));
     }
 }
