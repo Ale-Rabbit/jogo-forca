@@ -1,9 +1,9 @@
 package com.modelagem.software.jogo.mario.world.jogo.service;
 
 import com.modelagem.software.jogo.mario.world.jogo.entity.Categoria;
-import com.modelagem.software.jogo.mario.world.jogo.entrada.DtoEntradaConsultarCategorias;
+import com.modelagem.software.jogo.mario.world.jogo.entrada.DtoEntradaAtualizarCategorias;
 import com.modelagem.software.jogo.mario.world.jogo.repository.CategoriaRepository;
-import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoCategoria;
+import com.modelagem.software.jogo.mario.world.jogo.dto.DtoCategoria;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetorno;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetornoConsultarCategorias;
 import lombok.Data;
@@ -33,12 +33,11 @@ public class CategoriaService {
             retorno = categorias.stream().map( c ->
             {
 
-                DtoCategoria retornoCategoria = DtoCategoria.builder()
-                                                            .id(c.getIdCategoria())
-                                                            .descricao(c.getDescCat())
-                                                            .build();
+                return DtoCategoria.builder()
+                                   .id(c.getIdCategoria())
+                                   .descricao(c.getDescCat())
+                                   .build();
 
-                return retornoCategoria;
 
             }).collect(Collectors.toList());
 
@@ -50,21 +49,21 @@ public class CategoriaService {
 
     }
 
-    public DtoRetorno atualizarCategorias(DtoEntradaConsultarCategorias entrada){
+    public DtoRetorno atualizarCategorias(DtoEntradaAtualizarCategorias entrada){
 
         List<Categoria> categoriasIncluir = new ArrayList<Categoria>();
         List<Categoria> categoriasExcluir = new ArrayList<Categoria>();
         List<Categoria> categoriasAtualizar = new ArrayList<Categoria>();
 
-        List<Categoria> categoriasDaBase = repository.findAll();
+        List<Categoria> categoriasBase = repository.findAll();
 
         if(entrada != null && entrada.getCategorias() != null && !entrada.getCategorias().isEmpty()){
 
-            if(categoriasDaBase != null && !categoriasDaBase.isEmpty()){
+            if(categoriasBase != null && !categoriasBase.isEmpty()) {
 
                 // posso atualizar, excluir e incluir
 
-               //incluir:
+                //incluir:
                categoriasIncluir.addAll(entrada.getCategorias()
                         .stream()
                         .filter( c -> (c.getId() == null))
@@ -82,19 +81,20 @@ public class CategoriaService {
 
 
                 //excluir:
-                List<Integer> idCategoriasBase = categoriasDaBase.stream().map(c -> c.getIdCategoria()).collect(Collectors.toList());
+                List<Integer> idCategoriasBase = categoriasBase.stream().map(c -> c.getIdCategoria()).collect(Collectors.toList());
                 List<Integer> idCategoriasEntrada = entrada.getCategorias().stream().map( c-> c.getId()).collect(Collectors.toList());
 
                 for ( Integer idCategoriaBase: idCategoriasBase ) {
 
                     if (!idCategoriasEntrada.contains(idCategoriaBase)){
-                        categoriasExcluir.add(categoriasDaBase
+                        categoriasExcluir.add(categoriasBase
                                               .stream()
                                               .filter(c -> c.getIdCategoria().equals(idCategoriaBase))
                                               .findFirst().orElse(null));
                     }
 
                 }
+
 
                 // atualizar
                 categoriasAtualizar.addAll(entrada.getCategorias()
@@ -103,7 +103,7 @@ public class CategoriaService {
                             return Categoria.builder()
                                     .idCategoria(cNovo.getId()).descCat(cNovo.getDescricao())
                                     .build();
-                        }).collect(Collectors.toList()));
+                        }).collect(Collectors.toList()) );
 
 
             } else {
@@ -127,7 +127,7 @@ public class CategoriaService {
 
             // posso somente excluir
 
-            categoriasExcluir.addAll(categoriasDaBase);
+            categoriasExcluir.addAll(categoriasBase);
             efetuarExclusao(categoriasExcluir);
 
         }

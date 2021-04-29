@@ -4,10 +4,8 @@ import com.modelagem.software.jogo.mario.world.jogo.entity.Palavra;
 import com.modelagem.software.jogo.mario.world.jogo.entity.Ranking;
 import com.modelagem.software.jogo.mario.world.jogo.repository.PalavraRepository;
 import com.modelagem.software.jogo.mario.world.jogo.repository.RankingRepository;
-import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetorno;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetornoIniciar;
 import lombok.Data;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

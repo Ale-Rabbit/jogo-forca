@@ -1,9 +1,8 @@
 package com.modelagem.software.jogo.mario.world.jogo.controller;
 
-import com.modelagem.software.jogo.mario.world.jogo.entrada.DtoEntradaConsultarCategorias;
+import com.modelagem.software.jogo.mario.world.jogo.entrada.DtoEntradaAtualizarCategorias;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetorno;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetornoConsultarCategorias;
-import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetornoIniciar;
 import com.modelagem.software.jogo.mario.world.jogo.service.CategoriaService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<DtoRetorno> atualizarCategorias(@RequestBody DtoEntradaConsultarCategorias entrada){
+    public ResponseEntity<DtoRetorno> atualizarCategorias(@RequestBody DtoEntradaAtualizarCategorias entrada){
         return ResponseEntity.ok().body(service.atualizarCategorias(entrada));
     }
 
