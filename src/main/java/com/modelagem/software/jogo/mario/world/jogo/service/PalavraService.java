@@ -8,6 +8,7 @@ import com.modelagem.software.jogo.mario.world.jogo.repository.PalavraRepository
 import com.modelagem.software.jogo.mario.world.jogo.dto.DtoCategoria;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetorno;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetornoConsultarPalavras;
+import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetornoConsultarPalavraAleatoria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,63 @@ public class PalavraService {
 
     @Autowired
     private PalavraRepository repository;
+
+    public DtoRetornoConsultarPalavraAleatoria consultarPalavraAleatoria(String categoria){
+
+        if(categoria != null && !categoria.isEmpty()) {
+
+            Optional<List<Palavra>> palavras = repository.findByCategoriaDescCat(categoria);
+
+            if (palavras.isPresent() && !palavras.get().isEmpty()) {
+
+                if (palavras.get().size() > 1) {
+
+                    return DtoRetornoConsultarPalavraAleatoria.builderDefault()
+                            .palavra(retornarPalavraAleatoria(palavras.get()))
+                            .build();
+
+                } else {
+
+                    return DtoRetornoConsultarPalavraAleatoria.builderDefault()
+                            .palavra(palavras.get().get(0).getDescPv())
+                            .build();
+
+                }
+
+            }
+
+        } else {
+
+            List<Palavra> palavras = repository.findAll();
+
+            if (palavras != null && !palavras.isEmpty()) {
+
+                return DtoRetornoConsultarPalavraAleatoria.builderDefault()
+                        .palavra(retornarPalavraAleatoria(palavras))
+                        .build();
+
+            }
+
+        }
+
+        return new DtoRetornoConsultarPalavraAleatoria(false,
+                "Nenhuma palavra encontrada para categoria " + categoria.toString());
+
+    }
+
+    public DtoRetornoConsultarPalavraAleatoria consultarPalavraAleatoria(){
+        return consultarPalavraAleatoria(null);
+    }
+
+    private String retornarPalavraAleatoria(List<Palavra> palavras){
+
+        int quantidadeDePalavras = palavras.size();
+
+        Palavra palavraAleatoria = palavras.get(new Random().nextInt(quantidadeDePalavras));
+        return palavraAleatoria.getDescPv();
+
+    }
+
 
     public DtoRetornoConsultarPalavras consultarPalavras(){
 
