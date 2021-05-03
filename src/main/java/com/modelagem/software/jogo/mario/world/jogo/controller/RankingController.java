@@ -1,5 +1,7 @@
 package com.modelagem.software.jogo.mario.world.jogo.controller;
 
+
+
 import java.util.List;
 
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetorno;
@@ -23,7 +25,7 @@ public class RankingController {
     }
 
     @GetMapping
-    public List<Ranking> findAllRanking(){
+    public List<Ranking> findTop10(){
         return service.getRanking();
     }
 
