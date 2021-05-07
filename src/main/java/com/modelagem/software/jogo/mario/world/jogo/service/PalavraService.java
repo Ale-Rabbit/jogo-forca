@@ -230,8 +230,8 @@ public class PalavraService {
                             return Palavra.builder()
                                           .descPv(pNovo.getDescricao())
                                           .categoria(Categoria.builder()
-                                                        .idCategoria(pNovo.getId())
-                                                        .descCat(pNovo.getDescricao())
+                                                        .idCategoria(pNovo.getCategoria().getId())
+                                                        .descCat(pNovo.getCategoria().getDescricao())
                                                         .build())
                                           .build();
                         }).collect(Collectors.toList()));
