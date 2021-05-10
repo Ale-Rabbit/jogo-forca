@@ -187,8 +187,8 @@ public class PalavraService {
                                                      .idPalavra(palavraEntrada.getId())
                                                      .descPv(palavraEntrada.getDescricao())
                                                      .categoria(Categoria.builder()
-                                                                         .idCategoria(palavraEntrada.getId())
-                                                                         .descCat(palavraEntrada.getDescricao())
+                                                                         .idCategoria(palavraEntrada.getCategoria().getId())
+                                                                         .descCat(palavraEntrada.getCategoria().getDescricao())
                                                                          .build())
                                                     .build());
 
