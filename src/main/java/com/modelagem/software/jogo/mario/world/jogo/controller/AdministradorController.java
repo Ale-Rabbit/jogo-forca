@@ -3,6 +3,8 @@ package com.modelagem.software.jogo.mario.world.jogo.controller;
 import com.modelagem.software.jogo.mario.world.jogo.entity.Administrador;
 import com.modelagem.software.jogo.mario.world.jogo.retorno.DtoRetorno;
 import com.modelagem.software.jogo.mario.world.jogo.service.AdministradorService;
+import com.modelagem.software.jogo.mario.world.jogo.retorno.RetornoErroAdm;
+
 import lombok.Getter;
 
 import java.util.List;
@@ -43,13 +45,35 @@ public class AdministradorController {
 	
 	@PostMapping(path = "/insert")
     public ResponseEntity<Administrador> create(@RequestBody Administrador adm){
+		String compuser;
+		String comppass;
+		
+		compuser = adm.getUsername();
+		comppass = adm.getPassword();
+		//Tirando espaço do cadastro
+		compuser = compuser.replace(" ", "");
+		comppass = comppass.replace(" ", "");
+		//valida se os campos username e password estao sendo inseridos sem espaço e nao vazios
+		if(adm.getUsername() != compuser || adm.getPassword() != comppass || adm.getPassword().isEmpty() || adm.getUsername().isEmpty()) {
+			return new ResponseEntity(new RetornoErroAdm("Campos 'Username' e/ou 'Password não foram preenchidos corretamente!"), HttpStatus.NOT_FOUND);
+		}
+		//valida tamanho minimo para username
+		if(adm.getUsername().length() < 4) {
+			return new ResponseEntity(new RetornoErroAdm("Campo Username deve ter no mínimo 4 caracteres!"), HttpStatus.NOT_FOUND);
+		}
+		//valida tamanho minimo para password
+		if(adm.getPassword().length() < 4) {
+			return new ResponseEntity(new RetornoErroAdm("Campo Password deve ter no mínimo 4 caracteres!"), HttpStatus.NOT_FOUND);
+		}
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(adm));
     }
 	
-
 	@PutMapping(path = "/update/{id}")
     public ResponseEntity<Administrador> update(@RequestBody Administrador adm){
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(adm));
+		if(adm.getIdAdministrador() == null) {
+			return new ResponseEntity(new RetornoErroAdm("Deve ser informado o Id para atualizar!"), HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(service.update(adm));
     }
 
 	@DeleteMapping(path = "/delete/{id}")
